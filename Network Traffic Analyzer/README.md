@@ -22,13 +22,14 @@ Welcome to CyberYaw's Network Traffic Analyzer, a terminal-based cybersecurity t
 ```bash
 git clone https://github.com/yoadjei/Network-Traffic-Analyzer.git
 cd Network-Traffic-Analyzer
+
 ### 2. Install Dependencies
 
 Make sure you have Python 3.9 or higher installed. Install the required packages:
 
 pip install -r requirements.txt
 
-3. Configure .env File
+### 3. Configure .env File
 
 Create a .env file in the project root directory with the following:
 
@@ -36,7 +37,7 @@ EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_password
 SLACK_WEBHOOK=https://hooks.slack.com/services/your/slack/webhook
 
-4. Run the Tool
+### 4. Run the Tool
 
 Start the tool using:
 
