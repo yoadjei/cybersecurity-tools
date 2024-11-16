@@ -22,7 +22,7 @@ To get started with the CyberYaw Network Traffic Analyzer, follow the steps belo
 
 Clone the project repository to your local machine:
 
-git clone https://github.com/YourUsername/Network-Traffic-Analyzer.git
+git clone https://github.com/yoadjei/Network-Traffic-Analyzer.git
 cd Network-Traffic-Analyzer
 
 2. Install Dependencies
