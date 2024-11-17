@@ -39,5 +39,5 @@ async def async_packet_capture(interface):
     loop = asyncio.get_event_loop()
     await loop.run_in_executor(None, scapy.sniff, {'iface': interface, 'prn': handle_packet, 'store': 0})
 
-if name == "__main__":
+if __name__ == "__main__":
     main()
