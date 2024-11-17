@@ -37,7 +37,7 @@ def main():
 async def async_packet_capture(interface):
     print(f"\nStarting packet capture on interface: {interface}")
     loop = asyncio.get_event_loop()
-    await loop.run_in_executor(None, scapy.sniff, {'iface': interface, 'prn': handle_packet, 'store': 0})
-
+    await loop.run_in_executor(None, scapy.sniff, {"iface": interface, "prn": handle_packet, "store": 0, "count": 0})
+    
 if __name__ == "__main__":
     main()
