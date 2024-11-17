@@ -1,13 +1,7 @@
-import asyncio
 import scapy.all as scapy
-from scapy.layers.http import HTTPRequest, HTTPResponse
-from scapy.layers.dns import DNS, DNSQR, DNSRR
-from scapy.layers.l2 import ARP
-from datetime import datetime
-import pyfiglet  # ASCII Art banner
-from utils.packet_utils import handle_packet, select_interface
-from utils.alert_utils import trigger_alert
-from utils.db_utils import store_packet_in_db
+from scapy.layers.http import HTTPRequest
+from scapy.layers.dns import DNS, DNSQR
+import pyfiglet
 
 # Function to show the banner
 def show_banner():
@@ -17,52 +11,43 @@ def show_banner():
     print("Network Traffic Analyzer Tool")
     print("-" * 30)
 
-# Call the banner function
-show_banner()
+# Handle the captured packet
+def handle_packet(packet):
+    try:
+        if packet.haslayer(HTTPRequest):
+            print(f"HTTP Request: {packet[HTTPRequest].Host} {packet[HTTPRequest].Path}")
+        elif packet.haslayer(DNS):
+            dns_query = packet[DNSQR].qname.decode()
+            print(f"DNS Query: {dns_query}")
+        else:
+            print(f"Packet: {packet.summary()}")
+    except Exception as e:
+        print(f"Error handling packet: {e}")
 
-# Global variables
-packet_counts = []
-anomaly_count = 0
-PACKET_WINDOW_SIZE = 100
+# Select the network interface
+def select_interface():
+    interfaces = scapy.get_if_list()
+    for i, iface in enumerate(interfaces):
+        print(f"[{i}] {iface}")
+    choice = int(input("Select the interface to sniff (number): "))
+    if choice < 0 or choice >= len(interfaces):
+        print("Invalid choice. Exiting.")
+        return None
+    return interfaces[choice]
 
 # Main function to start capturing packets
 def main():
+    show_banner()
     interface = select_interface()
+    if not interface:
+        print("Invalid interface selected!")
+        return
     try:
-        asyncio.run(async_packet_capture(interface))
+        print(f"\nStarting packet capture on interface: {interface}")
+        scapy.sniff(iface=interface, prn=handle_packet, store=0)
     except KeyboardInterrupt:
         print("\nStopping packet capture. Goodbye!")
         exit()
-
-# Asynchronous packet capture
-async def async_packet_capture(interface):
-    print(f"\nStarting packet capture on interface: {interface}")
-    loop = asyncio.get_event_loop()
-    # Using the correct scapy.sniff() call
-    await loop.run_in_executor(None, scapy.sniff, {'iface': interface, 'prn': handle_packet, 'store': 0, 'count': 0})
-
-# Function to handle captured packets
-def handle_packet(packet):
-    # Ignore ARP packets
-    if packet.haslayer(ARP):
-        print("Ignoring ARP packet...")
-        return  # Skip processing ARP packets
-
-    # Process IP packets
-    if packet.haslayer(scapy.IP):
-        print(f"IP Packet: {packet.summary()}")
-
-    # Process DNS queries
-    elif packet.haslayer(DNSQR):
-        print(f"DNS Query: {packet[DNSQR].qname.decode()}")
-
-    # Process HTTP requests
-    elif packet.haslayer(HTTPRequest):
-        print(f"HTTP Request: {packet[HTTPRequest].Host} {packet[HTTPRequest].Path}")
-
-    # Optionally store the packet in the database or trigger alerts
-    store_packet_in_db(packet)  # Example of storing packets
-    trigger_alert(packet)       # Example of triggering an alert
 
 if __name__ == "__main__":
     main()
