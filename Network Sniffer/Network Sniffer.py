@@ -35,4 +35,4 @@ def start_sniffing(interface):
     sniff(iface=interface, prn=packet_handler, store=0)
 
 # Directly start sniffing packets on the 'eth0' network interface
-start_sniffing("eth0")
+start_sniffing("Wi-Fi")
