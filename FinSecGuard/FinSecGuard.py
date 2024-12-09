@@ -30,18 +30,29 @@ def analyze_password_strength(password):
         return False
 
 # Network Sniffer for Fraud Detection
+import scapy.all as scapy
+
 def sniff_network():
     print("Starting network sniffing...")
-    # Sniffing HTTP traffic on the network to detect unusual transactions
-    packets = scapy.sniff(filter="tcp port 80", count=10, timeout=10)  # Listen to HTTP packets
+    # No need to set L3socket manually for Layer 3 sniffing (IP)
+    packets = scapy.sniff(filter="tcp port 80", count=10, timeout=10, iface=0)  # Sniff at Layer 3 (IP layer)
+    
     for packet in packets:
-        if packet.haslayer(scapy.IP):
+        if packet.haslayer(scapy.IP):  # Check if the packet has an IP layer
             ip_src = packet[scapy.IP].src
             ip_dst = packet[scapy.IP].dst
             print(f"Packet detected from {ip_src} to {ip_dst}")
             # Simple fraud detection: Check for unusual IP addresses (for demo purposes)
             if ip_src not in ["trusted_ip_1", "trusted_ip_2"]:  # Placeholder trusted IPs
                 print("Warning: Unusual source IP detected!")
+
+# Run the sniffing function
+sniff_network()
+
+
+
+
+
 
 # Simulated Financial Transaction Log for Fraud Detection
 def simulate_transaction():
