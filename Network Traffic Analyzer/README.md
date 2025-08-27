@@ -1,6 +1,6 @@
-# **CyberYaw's Network Traffic Analyzer**
+# **Network Traffic Analyzer**
 
-Welcome to CyberYaw’s Network Traffic Analyzer, an advanced tool designed for real-time network packet analysis, anomaly detection, and automated alerting. This tool helps cybersecurity professionals and enthusiasts monitor network traffic, identify suspicious behavior, and ensure the integrity of their network environment.
+Network Traffic Analyzer, an advanced tool designed for real-time network packet analysis, anomaly detection, and automated alerting. This tool helps cybersecurity professionals and enthusiasts monitor network traffic, identify suspicious behavior, and ensure the integrity of their network environment.
 
 # **Features**
 
